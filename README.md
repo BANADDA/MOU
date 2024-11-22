@@ -1,717 +1,522 @@
-# Flutter and Dart Programming Tutorial
+# Flutter Development: The Complete Guide
 
-## Module 2: Dart Programming Fundamentals
-**Objective**: Establish a solid foundation in Dart programming.
+## Table of Contents
+1. [Dart Programming Basics](#dart-basics)
+2. [Flutter Framework Overview](#flutter-overview)
+3. [Widget System](#widget-system)
+4. [State Management](#state-management)
 
-### Basic Syntax and Structure
+## Dart Basics
 
-#### Data Types, Variables, and Operators
+### Core Data Types
+```mermaid
+mindmap
+  root((Dart Types))
+    Numbers
+      int
+      double
+    Text
+      String
+    Collections
+      List
+      Map
+      Set
+    Other
+      bool
+      dynamic
+```
 
-##### Data Types
-Dart is a statically-typed language, meaning you must specify the type of variables. Common data types include:
-- Numbers: `int` (integer), `double` (floating-point)
-- Strings: `String`
-- Booleans: `bool`
-- Lists: `List`
-- Maps: `Map`
+### Variables & Constants
+| Type | Example | Usage |
+|------|---------|-------|
+| var | `var name = 'John'` | Type inference |
+| final | `final age = 30` | Runtime constant |
+| const | `const pi = 3.14` | Compile-time constant |
 
-##### Variables
-Variables store data and are declared using `var`, explicit types, or constants using `final` and `const`.
+### Code Examples
 
 ```dart
-// Using var (type inferred)
-var name = 'Alice';
+// Variable declarations
+String name = 'Alice';
+int age = 25;
+final DateTime now = DateTime.now();
+const double pi = 3.14159;
 
-// Explicit type declaration
-int age = 30;
-
-// Constants
-final DateTime now = DateTime.now(); // Runtime constant
-const double pi = 3.1416; // Compile-time constant
+// Basic operations
+int sum = 5 + 3;
+String greeting = 'Hello $name'; // String interpolation
 ```
 
-##### Operators
-Operators perform operations on variables and values.
-- Arithmetic Operators: `+`, `-`, `*`, `/`, `%`, `~/` (integer division)
-- Assignment Operators: `=`, `+=`, `-=`, etc.
-- Comparison Operators: `==`, `!=`, `>`, `<`, `>=`, `<=`
-- Logical Operators: `&&`, `||`, `!`
+## Flutter Overview
 
-Example:
+### Architecture
+```mermaid
+graph TD
+    A[Flutter App] --> B[Widget Layer]
+    B --> C[Rendering Layer]
+    C --> D[Platform Integration]
+    
+    style A fill:#e1f5fe
+    style B fill:#b3e5fc
+    style C fill:#81d4fa
+    style D fill:#4fc3f7
+```
+
+### Project Structure
+```
+📦 flutter_app
+ ┣ 📂 lib
+ ┃ ┗ 📜 main.dart
+ ┣ 📂 assets
+ ┣ 📂 test
+ ┣ 📜 pubspec.yaml
+ ┗ 📜 README.md
+```
+
+## Widget System
+
+### Types of Widgets
+
+#### 1. Stateless Widgets
+- Immutable
+- No internal state
+- Pure functions of their properties
+- Example: Icons, Text, RaisedButton
+
 ```dart
-int a = 10;
-int b = 3;
+class WelcomeText extends StatelessWidget {
+  final String name;
+  WelcomeText(this.name);
 
-int sum = a + b; // 13
-int diff = a - b; // 7
-int product = a * b; // 30
-double quotient = a / b; // 3.333...
-int intQuotient = a ~/ b; // 3
-int remainder = a % b; // 1
-
-bool isEqual = a == b; // false
-bool isGreater = a > b; // true
-```
-
-### Control Structures
-
-#### Loops and Conditionals
-
-##### Conditionals
-If-Else Statement:
-```dart
-int score = 85;
-
-if (score >= 90) {
-  print('Grade: A');
-} else if (score >= 80) {
-  print('Grade: B');
-} else {
-  print('Grade: C');
-}
-```
-
-Switch Statement:
-```dart
-String command = 'OPEN';
-
-switch (command) {
-  case 'OPEN':
-    print('Opening');
-    break;
-  case 'CLOSE':
-    print('Closing');
-    break;
-  default:
-    print('Unknown command');
-}
-```
-
-##### Loops
-For Loop:
-```dart
-for (int i = 0; i < 5; i++) {
-  print('Iteration $i');
-}
-```
-
-While Loop:
-```dart
-int count = 0;
-while (count < 5) {
-  print('Count is $count');
-  count++;
-}
-```
-
-Do-While Loop:
-```dart
-int count = 0;
-do {
-  print('Count is $count');
-  count++;
-} while (count < 5);
-```
-
-For-In Loop (Iterating over collections):
-```dart
-List<String> fruits = ['Apple', 'Banana', 'Cherry'];
-
-for (var fruit in fruits) {
-  print(fruit);
-}
-```
-
-### Functions and Classes
-
-#### Defining and Using Functions
-
-##### Functions
-Functions encapsulate reusable code blocks.
-```dart
-// Function with no return type
-void greet(String name) {
-  print('Hello, $name!');
-}
-
-// Function with return type
-int add(int x, int y) {
-  return x + y;
-}
-
-// Arrow function (short-hand syntax)
-int multiply(int x, int y) => x * y;
-```
-
-Usage:
-```dart
-greet('Alice'); // Output: Hello, Alice!
-
-int sum = add(5, 3); // sum = 8
-int product = multiply(4, 2); // product = 8
-```
-
-#### Object-Oriented Programming Concepts
-
-##### Classes and Objects
-Defining a Class:
-```dart
-class Person {
-  // Properties
-  String name;
-  int age;
-
-  // Constructor
-  Person(this.name, this.age);
-
-  // Method
-  void introduce() {
-    print('My name is $name, and I am $age years old.');
-  }
-}
-```
-
-Creating an Object:
-```dart
-void main() {
-  Person person = Person('Bob', 25);
-  person.introduce(); // Output: My name is Bob, and I am 25 years old.
-}
-```
-
-##### Inheritance
-```dart
-class Employee extends Person {
-  String position;
-
-  Employee(String name, int age, this.position) : super(name, age);
-
-  @override
-  void introduce() {
-    super.introduce();
-    print('I work as a $position.');
-  }
-}
-
-void main() {
-  Employee employee = Employee('Carol', 28, 'Engineer');
-  employee.introduce();
-  // Output:
-  // My name is Carol, and I am 28 years old.
-  // I work as a Engineer.
-}
-```
-
-### Exception Handling and Asynchronous Programming
-
-#### Try-Catch Blocks
-Exception Handling:
-```dart
-void main() {
-  try {
-    int result = 10 ~/ 0; // Division by zero
-  } catch (e) {
-    print('An error occurred: $e');
-  } finally {
-    print('Execution completed.');
-  }
-}
-```
-
-#### Futures and Async-Await
-
-##### Futures
-A Future represents an asynchronous operation that returns a value in the future.
-```dart
-Future<String> fetchData() {
-  return Future.delayed(Duration(seconds: 2), () => 'Data loaded');
-}
-
-void main() {
-  fetchData().then((data) {
-    print(data); // Output after 2 seconds: Data loaded
-  });
-}
-```
-
-##### Async-Await
-Simplifies working with futures.
-```dart
-Future<void> main() async {
-  print('Fetching data...');
-  String data = await fetchData();
-  print(data); // Output after 2 seconds: Data loaded
-}
-```
-
-## Module 3: Flutter Basics
-**Objective**: Introduce core Flutter concepts and project structure.
-
-### Understanding Flutter's Architecture
-
-#### Widgets, Rendering, and Framework Layers
-
-##### Widgets
-- Widgets are the basic building blocks of a Flutter app's user interface
-- Every component in Flutter is a widget, including layout models, controls, and styles
-
-##### Rendering
-- Flutter uses its own rendering engine, Skia, to draw widgets
-- The rendering process converts the widget tree into pixels on the screen
-
-##### Framework Layers
-- Widgets Layer: High-level, platform-independent widgets
-- Rendering Layer: Layout and painting of widgets
-- Foundation Layer: Core building blocks and utilities
-
-### Exploring the Flutter Project Structure
-
-#### Directories and Files
-Typical Project Structure:
-```
-my_app/
-├── android/
-├── ios/
-├── lib/
-│   └── main.dart
-├── pubspec.yaml
-├── test/
-```
-
-- `lib/`: Contains Dart code
-- `main.dart`: Entry point of the app
-- `android/`: Android-specific files
-- `ios/`: iOS-specific files
-- `pubspec.yaml`: Project configuration and dependencies
-- `test/`: Unit tests
-
-# Flutter Tutorial (Continued)
-
-## Module 4: Widgets and UI Design
-**Objective**: Learn to build user interfaces using Flutter's widget system.
-
-### Introduction to Widgets
-
-#### Stateless and Stateful Widgets
-
-##### StatelessWidget
-Immutable widgets that do not require mutable state.
-
-Example:
-```dart
-class MyStatelessWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Text('Hello, World!');
+    return Text('Welcome, $name!');
   }
 }
 ```
 
-##### StatefulWidget
-Widgets that maintain mutable state. Consist of two classes: the StatefulWidget and its associated State.
+#### 2. Stateful Widgets
+- Mutable state
+- Can be updated during lifetime
+- Maintains state between rebuilds
 
-Example:
 ```dart
-class MyStatefulWidget extends StatefulWidget {
+class Counter extends StatefulWidget {
   @override
-  _MyStatefulWidgetState createState() => _MyStatefulWidgetState();
+  _CounterState createState() => _CounterState();
 }
 
-class _MyStatefulWidgetState extends State<MyStatefulWidget> {
-  int _counter = 0;
-
-  void _incrementCounter() {
+class _CounterState extends State<Counter> {
+  int count = 0;
+  
+  void increment() {
     setState(() {
-      _counter++;
+      count++;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Text('Counter: $_counter'),
-        ElevatedButton(
-          onPressed: _incrementCounter,
-          child: Text('Increment'),
-        ),
-      ],
-    );
+    return Text('Count: $count');
   }
 }
 ```
 
-### Building Layouts with Common Widgets
-
-#### Container, Row, Column, Stack
-
-##### Container
-A versatile widget for layout, styling, and positioning.
-```dart
-Container(
-  width: 100,
-  height: 100,
-  color: Colors.blue,
-  child: Text('Hello'),
-)
+### Layout Widgets
+```mermaid
+graph LR
+    A[Container] --> B[Padding]
+    B --> C[Row/Column]
+    C --> D[Children Widgets]
 ```
 
-##### Row and Column
-Row arranges children horizontally. Column arranges children vertically.
+#### Common Layouts
+1. **Container**
+   - Single child
+   - Padding, margins, decoration
+   ```dart
+   Container(
+     padding: EdgeInsets.all(8.0),
+     margin: EdgeInsets.symmetric(vertical: 16.0),
+     decoration: BoxDecoration(
+       color: Colors.blue,
+       borderRadius: BorderRadius.circular(8.0),
+     ),
+     child: Text('Hello'),
+   )
+   ```
 
-```dart
-// Row Example
-Row(
-  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-  children: [
-    Icon(Icons.home),
-    Icon(Icons.star),
-    Icon(Icons.person),
-  ],
-)
+2. **Row/Column**
+   - Multiple children
+   - Linear layout
+   ```dart
+   Row(
+     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+     children: [
+       Icon(Icons.star),
+       Icon(Icons.star),
+       Icon(Icons.star),
+     ],
+   )
+   ```
 
-// Column Example
-Column(
-  mainAxisAlignment: MainAxisAlignment.center,
-  children: [
-    Text('Line 1'),
-    Text('Line 2'),
-    Text('Line 3'),
-  ],
-)
+## State Management
+
+### Local State
+- Using `setState()`
+- Scoped to single widget
+- Simple to implement
+
+### Global State
+Options include:
+1. **Provider**
+   ```dart
+   ChangeNotifierProvider(
+     create: (context) => MyState(),
+     child: MyApp(),
+   )
+   ```
+
+2. **Bloc**
+   ```dart
+   BlocProvider(
+     create: (context) => MyBloc(),
+     child: MyApp(),
+   )
+   ```
+
+3. **Riverpod**
+   ```dart
+   final counterProvider = StateProvider((ref) => 0);
+   ```
+
+### State Management Decision Tree
+```mermaid
+graph TD
+    A[Need State Management?] -->|Yes| B[Single Widget?]
+    B -->|Yes| C[setState]
+    B -->|No| D[Multiple Widgets?]
+    D -->|Simple| E[Provider]
+    D -->|Complex| F[Bloc/Riverpod]
 ```
 
-##### Stack
-Positions widgets on top of each other.
-```dart
-Stack(
-  children: [
-    Container(
-      width: 200,
-      height: 200,
-      color: Colors.red,
-    ),
-    Positioned(
-      top: 50,
-      left: 50,
-      child: Container(
-        width: 100,
-        height: 100,
-        color: Colors.blue,
-      ),
-    ),
-  ],
-)
+## Best Practices
+
+### Widget Structure
+- Keep widgets small and focused
+- Extract reusable widgets
+- Use const constructors when possible
+
+### Performance
+- Minimize rebuilds
+- Use appropriate state management
+- Profile regularly
+
+### Code Organization
+```
+lib/
+├── screens/
+├── widgets/
+├── models/
+├── services/
+└── utils/
 ```
 
-### Handling User Input with Form Widgets
+---
 
-#### TextField, Checkbox, Radio Buttons, Dropdowns
+# Flutter Development Guide (Continued)
 
-##### TextField
-Input field for text.
-```dart
-TextField(
-  decoration: InputDecoration(
-    labelText: 'Enter your name',
-  ),
-)
+## Navigation & Routing
+
+### Navigation Patterns
+```mermaid
+graph TD
+    A[Home Screen] --> B[Detail Screen]
+    A --> C[Settings Screen]
+    B --> D[Edit Screen]
+    B --> E[Share Screen]
+    
+    style A fill:#e3f2fd
+    style B,C fill:#bbdefb
+    style D,E fill:#90caf9
 ```
 
-##### Checkbox
-Binary option widget.
+### Types of Navigation
+
+#### 1. Basic Navigation
 ```dart
-bool _isChecked = false;
-
-Checkbox(
-  value: _isChecked,
-  onChanged: (bool? newValue) {
-    setState(() {
-      _isChecked = newValue!;
-    });
-  },
-)
-```
-
-##### Radio Buttons
-Select one option from a group.
-```dart
-int _selectedValue = 1;
-
-Column(
-  children: [
-    Radio<int>(
-      value: 1,
-      groupValue: _selectedValue,
-      onChanged: (int? value) {
-        setState(() {
-          _selectedValue = value!;
-        });
-      },
-    ),
-    Radio<int>(
-      value: 2,
-      groupValue: _selectedValue,
-      onChanged: (int? value) {
-        setState(() {
-          _selectedValue = value!;
-        });
-      },
-    ),
-  ],
-)
-```
-
-##### DropdownButton
-Select one option from a dropdown list.
-```dart
-String _selectedItem = 'Apple';
-
-DropdownButton<String>(
-  value: _selectedItem,
-  items: <String>['Apple', 'Banana', 'Cherry'].map((String value) {
-    return DropdownMenuItem<String>(
-      value: value,
-      child: Text(value),
-    );
-  }).toList(),
-  onChanged: (String? newValue) {
-    setState(() {
-      _selectedItem = newValue!;
-    });
-  },
-)
-```
-
-### Implementing Navigation and Routing
-
-#### Navigator Class, Named Routes, Passing Data Between Screens
-
-##### Basic Navigation
-Using Navigator.push:
-```dart
-// Navigate to SecondScreen
+// Push new screen
 Navigator.push(
   context,
-  MaterialPageRoute(builder: (context) => SecondScreen()),
+  MaterialPageRoute(builder: (context) => DetailScreen()),
 );
 
-// SecondScreen Widget
-class SecondScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(child: Text('Second Screen')),
-    );
-  }
-}
+// Pop back
+Navigator.pop(context);
 ```
 
-##### Named Routes
-Define Routes in MaterialApp:
-```dart
+#### 2. Named Routes
+```yaml
+# In MaterialApp
 MaterialApp(
-  initialRoute: '/',
   routes: {
     '/': (context) => HomeScreen(),
-    '/second': (context) => SecondScreen(),
+    '/details': (context) => DetailScreen(),
+    '/settings': (context) => SettingsScreen(),
   },
-);
-
-// Navigate Using Named Routes
-Navigator.pushNamed(context, '/second');
+)
 ```
 
-##### Passing Data Between Screens
+#### 3. Navigation with Arguments
 ```dart
 // Passing Data
+class DetailScreen extends StatelessWidget {
+  final String data;
+  DetailScreen({required this.data});
+  
+  // Build method...
+}
+
+// Navigate with data
 Navigator.push(
   context,
   MaterialPageRoute(
-    builder: (context) => SecondScreen(data: 'Hello from HomeScreen'),
+    builder: (context) => DetailScreen(data: 'Hello!'),
   ),
 );
-
-// Receiving Data in SecondScreen
-class SecondScreen extends StatelessWidget {
-  final String data;
-
-  SecondScreen({required this.data});
-
-  @override
-  Widget build(BuildContext context) {
-    return Text(data);
-  }
-}
 ```
 
-## Module 5: State Management
-**Objective**: Understand and implement state management in Flutter applications.
+## Forms & Input Handling
 
-### Overview of State Management Approaches
-- Local State: Managed within a single widget using setState
-- Global State: Shared across multiple widgets or the entire app
+### Form Structure
+```mermaid
+graph TD
+    A[Form Widget] --> B[TextFormField]
+    A --> C[DropdownButtonFormField]
+    A --> D[Checkbox/Switch]
+    B --> E[Validation]
+    C --> E
+    D --> E
+    E --> F[Form Submission]
+```
 
-### Using setState() for Local State Management
-
-#### Updating UI in Stateful Widgets
+### Form Implementation
 ```dart
-class CounterWidget extends StatefulWidget {
+class MyCustomForm extends StatefulWidget {
   @override
-  _CounterWidgetState createState() => _CounterWidgetState();
+  _MyCustomFormState createState() => _MyCustomFormState();
 }
 
-class _CounterWidgetState extends State<CounterWidget> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++; // Updates the UI
-    });
-  }
+class _MyCustomFormState extends State {
+  final _formKey = GlobalKey();
+  String _email = '';
+  String _password = '';
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Text('Counter: $_counter'),
-        ElevatedButton(
-          onPressed: _incrementCounter,
-          child: Text('Increment'),
-        ),
-      ],
+    return Form(
+      key: _formKey,
+      child: Column(
+        children: [
+          TextFormField(
+            decoration: InputDecoration(labelText: 'Email'),
+            validator: (value) {
+              if (value?.isEmpty ?? true) {
+                return 'Please enter email';
+              }
+              return null;
+            },
+            onSaved: (value) => _email = value ?? '',
+          ),
+          // More form fields...
+        ],
+      ),
     );
   }
 }
 ```
 
-### Introduction to Provider for Global State Management
+## Animations
 
-#### Managing App-Wide State
+### Types of Animations
+1. **Implicit Animations**
+2. **Explicit Animations**
+3. **Hero Animations**
+4. **Custom Animations**
 
-##### Adding Provider Dependency
-In pubspec.yaml:
-```yaml
-dependencies:
-  provider: ^6.0.0
-```
+### Animation Examples
 
-##### Creating a ChangeNotifier
+#### 1. Implicit Animation
 ```dart
-class Counter extends ChangeNotifier {
-  int _count = 0;
-
-  int get count => _count;
-
-  void increment() {
-    _count++;
-    notifyListeners(); // Notifies listeners to rebuild
-  }
-}
-```
-
-##### Providing the ChangeNotifier
-```dart
-void main() {
-  runApp(
-    ChangeNotifierProvider(
-      create: (context) => Counter(),
-      child: MyApp(),
-    ),
-  );
-}
-```
-
-##### Consuming the Provider
-```dart
-class CounterDisplay extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    int count = Provider.of<Counter>(context).count;
-    return Text('Count: $count');
-  }
-}
-
-class IncrementButton extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return ElevatedButton(
-      onPressed: () => Provider.of<Counter>(context, listen: false).increment(),
-      child: Text('Increment'),
-    );
-  }
-}
-```
-
-### Other State Management Solutions
-
-#### Bloc Pattern
-##### Adding Bloc Dependency
-```yaml
-dependencies:
-  flutter_bloc: ^8.0.0
-```
-
-##### Creating a Bloc
-```dart
-enum CounterEvent { increment }
-
-class CounterBloc extends Bloc<CounterEvent, int> {
-  CounterBloc() : super(0) {
-    on<CounterEvent>((event, emit) {
-      if (event == CounterEvent.increment) {
-        emit(state + 1);
-      }
-    });
-  }
-}
-```
-
-##### Using BlocProvider and Consuming Bloc
-```dart
-// Provider
-BlocProvider(
-  create: (context) => CounterBloc(),
-  child: MyApp(),
+AnimatedContainer(
+  duration: Duration(milliseconds: 300),
+  width: _isExpanded ? 200.0 : 100.0,
+  height: _isExpanded ? 200.0 : 100.0,
+  color: _isExpanded ? Colors.blue : Colors.red,
+  child: Center(child: Text('Tap to animate')),
 )
-
-// Consumer
-BlocBuilder<CounterBloc, int>(
-  builder: (context, count) {
-    return Text('$count');
-  },
-);
-
-ElevatedButton(
-  onPressed: () => context.read<CounterBloc>().add(CounterEvent.increment),
-  child: Text('Increment'),
-);
 ```
 
-#### Riverpod
-##### Adding Riverpod Dependency
-```yaml
-dependencies:
-  flutter_riverpod: ^1.0.0
-```
-
-##### Using Riverpod
+#### 2. Custom Animation
 ```dart
-// Defining a Provider
-final counterProvider = StateProvider<int>((ref) => 0);
+class AnimatedLogo extends StatefulWidget {
+  @override
+  _AnimatedLogoState createState() => _AnimatedLogoState();
+}
 
-// Consuming the Provider
-Consumer(
-  builder: (context, ref, child) {
-    int count = ref.watch(counterProvider).state;
-    return Text('Count: $count');
-  },
-);
+class _AnimatedLogoState extends State
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation _animation;
 
-ElevatedButton(
-  onPressed: () {
-    ref.read(counterProvider).state++;
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      duration: const Duration(seconds: 2),
+      vsync: this,
+    );
+    _animation = CurvedAnimation(
+      parent: _controller,
+      curve: Curves.easeIn,
+    );
+  }
+  
+  // Widget build method...
+}
+```
+
+## Theming & Styling
+
+### Theme Structure
+```mermaid
+graph TD
+    A[ThemeData] --> B[ColorScheme]
+    A --> C[TextTheme]
+    A --> D[AppBarTheme]
+    A --> E[ButtonTheme]
+```
+
+### Theme Implementation
+```dart
+MaterialApp(
+  theme: ThemeData(
+    primarySwatch: Colors.blue,
+    brightness: Brightness.light,
+    textTheme: TextTheme(
+      headline1: TextStyle(
+        fontSize: 24,
+        fontWeight: FontWeight.bold,
+      ),
+      bodyText1: TextStyle(
+        fontSize: 16,
+        height: 1.5,
+      ),
+    ),
+    // More theme data...
+  ),
+  // App content...
+)
+```
+
+## Advanced Widgets
+
+### CustomPaint
+```dart
+class MyCustomPainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..color = Colors.blue
+      ..strokeWidth = 4
+      ..style = PaintingStyle.stroke;
+
+    canvas.drawCircle(
+      Offset(size.width / 2, size.height / 2),
+      100,
+      paint,
+    );
+  }
+
+  @override
+  bool shouldRepaint(CustomPainter oldDelegate) => false;
+}
+```
+
+### Gestures
+```dart
+GestureDetector(
+  onTapDown: (details) {
+    // Handle tap down
   },
-  child: Text('Increment'),
-);
+  onPanUpdate: (details) {
+    // Handle drag
+  },
+  child: Container(
+    width: 200,
+    height: 200,
+    color: Colors.amber,
+  ),
+)
+```
+
+## State Management Patterns
+
+### BLoC Pattern Implementation
+```mermaid
+graph LR
+    A[UI] --> B[BLoC]
+    B --> C[Repository]
+    C --> D[Data Source]
+    D --> C
+    C --> B
+    B --> A
+```
+
+### Example BLoC Implementation
+```dart
+// Event
+abstract class CounterEvent {}
+class IncrementEvent extends CounterEvent {}
+
+// State
+class CounterState {
+  final int count;
+  CounterState(this.count);
+}
+
+// BLoC
+class CounterBloc extends Bloc {
+  CounterBloc() : super(CounterState(0)) {
+    on((event, emit) {
+      emit(CounterState(state.count + 1));
+    });
+  }
+}
+```
+
+## Testing
+
+### Types of Tests
+1. **Unit Tests**
+2. **Widget Tests**
+3. **Integration Tests**
+
+### Example Tests
+```dart
+// Widget Test
+testWidgets('Counter increments smoke test', (WidgetTester tester) async {
+  await tester.pumpWidget(MyApp());
+  expect(find.text('0'), findsOneWidget);
+  await tester.tap(find.byIcon(Icons.add));
+  await tester.pump();
+  expect(find.text('1'), findsOneWidget);
+});
+
+// Unit Test
+test('Counter value should be incremented', () {
+  final counter = Counter();
+  counter.increment();
+  expect(counter.value, 1);
+});
 ```
